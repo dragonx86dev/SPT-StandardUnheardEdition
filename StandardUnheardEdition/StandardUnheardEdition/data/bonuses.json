@@ -1,0 +1,18 @@
+[
+  {
+    "id": "64f5b9e5fa34f11b380756c0",
+    "templateId": "566abbc34bdc2d92178b4576",
+    "type": "StashSize"
+  },
+  {
+    "filter": [
+      "64d0b40fbe2eed70e254e2d4"
+    ],
+    "id": "669f9fbaddfe0dab8d0f359b",
+    "passive": true,
+    "production": false,
+    "type": "AdditionalSlots",
+    "value": 1,
+    "visible": false
+  }
+]

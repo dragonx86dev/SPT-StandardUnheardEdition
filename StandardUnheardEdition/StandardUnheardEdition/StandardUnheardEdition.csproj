@@ -1,0 +1,64 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <Version>1.0.0</Version>
+        <Configuration>Release</Configuration>
+        <AssemblyName>StandardUnheardEdition</AssemblyName>
+    </PropertyGroup>
+
+    <Target Name="RemoveDirectories" BeforeTargets="BeforeBuild">
+        <RemoveDir Directories="./bin/;./build/;./dist/" />
+    </Target>
+
+    <Target Name="CopyCustomContent" AfterTargets="AfterBuild">
+        <ItemGroup>
+            <DataFiles Include="bin\$(Configuration)\$(TargetFramework)\data\**\*" />
+        </ItemGroup>
+        <Copy SourceFiles="bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).dll"
+              DestinationFolder="./build/SPT_Runtime/user/mods/$(AssemblyName)/" />
+        <Copy SourceFiles="@(DataFiles)"
+              DestinationFolder="./build/SPT_Runtime/user/mods/$(AssemblyName)/data/%(RecursiveDir)"
+              SkipUnchangedFiles="true" Condition="'@(DataFiles)' != ''" />
+    </Target>
+
+    <Target Name="ZipOutputPath" AfterTargets="Build">
+        <MakeDir Directories="./dist" Condition="!Exists('./dist')" />
+        <Delete Files="./dist/$(AssemblyName)-$(Version).zip" Condition="Exists('./dist/$(AssemblyName)-$(Version).zip')" />
+        <ZipDirectory SourceDirectory="./build" DestinationFile="./dist/$(AssemblyName)-$(Version).zip" />
+    </Target>
+
+    <ItemGroup>
+        <PackageReference Include="SPTushonka.Common" Version="4.1.5" />
+        <PackageReference Include="SPTushonka.DI" Version="4.1.5" />
+        <PackageReference Include="SPTushonka.Server.Core" Version="4.1.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Update="data\bear_inventory.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="data\bonuses.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="data\common_skill.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="data\hideout_areas.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="data\trader.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+        <None Update="data\usec_inventory.json">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Folder Include="dist\" />
+    </ItemGroup>
+    
+</Project>
